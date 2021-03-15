@@ -1,0 +1,187 @@
+<!-- Criado por Djonathan Quadras -->
+
+
+# Questão 1.3 {-}
+
+## Enunciado {-}
+
+```{r, echo=FALSE}
+r1 = 1.85188
+x1 = 3.17947
+gm = 1/(0.0211806/1000)
+bm = 1/(0.037708706771/1000)
+r2 = 0.01852
+x2 = 0.03179
+v1 = 2400
+v2 = 240
+a = v1/v2
+S = 20000
+f = 60
+fp = 0.6
+indutivo = TRUE
+theta = 0
+if(indutivo){
+  theta = -abs(acos(fp))
+} else {
+  theta = abs(acos(fp))
+}
+```
+
+
+Um transformador de potência de $`r S` VA$, $`r v1`/`r v2` V$, $`r f` Hz$, possui os seguintes parâmetros:
+
+$$
+\begin{cases}
+  r_1 = `r r1`[\Omega]; \quad x_1 = `r x1`[\Omega]; \quad g_m = `r (1/gm)`[S]; \quad b_m = `r (1/bm)`[S] \\
+  r_2 = `r r2`[\Omega]; \quad x_2 = `r x2`[\Omega] \quad (\text{Referidos ao lado 2})
+\end{cases}
+$$
+
+
+Pede-se:
+
+a. O circuito elétrico equivalente completo (modelo “T”) do transformador (desenhos e parâmetros), referido aos dois lados do transformador;
+b. A corrente de excitação, a tensão e o fator de potência na fonte e a potência aparente fornecida pela fonte, referidas ao primário (lado 1), se o transformador estiver alimentando carga nominal (potência e tensão nominais), fator de potência 0,6 indutivo, usando o circuito equivalente completo (modelo “T”);
+c. Repetir o item b, usando o modelo impedância série;
+d. Comentar os resultados obtidos nos itens b e c, comparando a precisão e o tempo de resolução, usando os resultados do modelo “T” como referência.
+
+
+## Resolução {-}
+
+```{r, echo=FALSE}
+
+# Modelo T
+
+ilA = S/v2
+i2A = complex(modulus = ilA/a, argument = theta)
+v2l = a*v2
+e1 = v2l + complex(real = r1, imaginary = x1)*i2A
+ic = e1/gm
+im = e1/complex(real = 0, imaginary = bm)
+iphi = ic + im
+i1A = i2A + iphi
+v1lA = e1 + complex(real = r1, imaginary = x1)*i1A
+sA = Mod(v1lA)*Mod(i1A)
+
+# Modelo Impedância
+
+ilB = S/v2
+i2B = complex(modulus = ilB/a, argument = theta)
+v2l = a*v2
+i1B = i2B 
+v1lB = complex(real = r1 + (a^2)*r2, imaginary = x1 + (a^2)*x2)*i1B + v2l
+sB = Mod(v1lB)*Mod(i1B)
+```
+
+De acordo com as informações fornecidas, o circuito inicial é conforme apresentado na Figura  \@ref(fig:probA001).
+
+```{r probA001, fig.align='center', echo=FALSE, fig.cap='Circuito Inicial', out.width='80%'}
+knitr::include_graphics('images/prob13A001.jpg', dpi = NA)
+```
+
+Com isso, e sabendo-se que $a = \frac{V_1}{V_2} = `r a`$, temos o Circuito em T apresentado na Figura \@ref(fig:probA002)
+
+```{r probA002, fig.align='center', echo=FALSE, fig.cap='Circuito T',  out.width='80%'}
+knitr::include_graphics('images/prob13A002.jpg', dpi = NA)
+```
+
+De acordo com o enunciado, temos que a potência na carga é de $S = `r S` VA$. Sabe-se que $S = I_LV_2$, então, como $V2 = `r v2`V$, temos que
+
+$$
+S = I_LV_2 \implies I_L = \frac{`r S`}{`r v2`} \implies \boxed{I_L = `r round(ilA,2)` A}.
+$$
+
+Ademais, uma vez que o fator de potência é de `r fp` indutivo, temos que
+
+$$
+\theta_i = - \arccos{`r fp`} \implies \boxed{\theta = `r round(180*theta/pi,2)`}
+$$
+
+E, como $I'_2 = \frac{I_L}{a}$, temos que
+
+$$
+I_2 = \frac{`r round(ilA,2)`}{`r a`} \implies \boxed{`r round(i2A,2)` A}
+$$
+
+Considerando-se $V'_2 = aV_2$, temos que
+
+$$
+\boxed{V'_2 = `r v2l` V}
+$$
+
+Dessa forma, através da malha 2 conseguimos calcular a tensão sobre a carga em paralelo (E1). Portanto,
+
+$$
+E_1 = V'_2 + (`r complex(real = r1, imaginary = x1)`)I_2 \implies \boxed{E_1 = `r round(e1,2)` V}.
+$$
+
+Com o valor de $E_1$ é possível calcular as correntes $I_c$ e $I_m$ por meio da lei de ohm.
+
+$$
+\boxed{I_c = `r round(ic,2)` A \quad I_m = `r round(im,2)` A}.
+$$
+
+Com isso, temos o valor da corrente de excitação ($I_\phi$) e de $I_1$.
+
+$$
+  I_\phi = I_c + I_m \implies \boxed{I_\phi = `r round(iphi,2)`A}
+$$
+
+$$
+  I_1 = I_2 + I_\phi \implies \boxed{I_1 = `r round(i1A,2)`A}
+$$
+
+Finalmente, aplicando uma análise de malhas na malha 1, temos que a tensão na fonte é
+
+$$
+  V_1 = E_1 + (`r complex(real = r1, imaginary = x1)`)I_1 \implies \boxed{V_1 = `r round(v1lA)` V}.
+$$
+
+Por fim, a potência aparente fornecida pela fonte é
+
+$$
+  S = |V_1||I_1| \implies \boxed{S = `r sA` VA}.
+$$
+
+O circuito equivalente para o modelo proposto da forma de impedância em série é apresentado na Figura \@ref(fig:probA003)
+
+```{r probA003, fig.align='center', echo=FALSE, fig.cap='Circuito Impedância em Série', out.width='80%'}
+knitr::include_graphics('images/prob13A003.jpg', dpi = NA)
+```
+
+Dessa forma, semelhante ao modelo anterior, temos
+
+$$
+\boxed{I_1 = I_2 = `r round(i2B,2)`A}, \quad \boxed{V'_2 = `r v2l`V}.
+$$
+
+Assim, aplicando uma análise de malhas, temos que
+
+$$
+V_1 = (`r complex(real = r1 + (a^2)*r2, imaginary = x1 + (a^2)*x2)`)I_1 + V_2 \implies \boxed{V_1 = `r round(v1lB,2)`}
+$$
+
+E, finalmente, a potência aparente fornecida pela fonte é
+
+$$
+\boxed{S = |V_1||I_1| \implies S = `r round(sB,4)`VA}.
+$$
+
+Com base na Tabela \@ref(tab:tab1) podemos perceber que os modelos tem resultados muito semelhantes (com uma diferença máxima de até $1,25%$). Isso comprova que utilizar o modelo de Impedância em Série (desconsiderando as perdas em $g_m$ e $b_m$) não causam perdas significativas para a modelagem dos sistemas.
+
+
+```{r tab1, echo=FALSE}
+resultados <- data.frame(T1 = c("$I_1$ [A]", "$V_1$ [V]", "$I_2$ [A]", "$V'_2$ [V]", "$S$ [VA]"),
+                         T2 = c(round(i1A,2), round(v1lA,2), round(i2A,2), round(v2l,2), round(sA,2)),
+                         T3 = c(round(i1B,2), round(v1lB,2), round(i2B,2), round(v2l,2), round(sB,2)),
+                         T4 = c(paste(abs(round(100*((Mod(i1A)-Mod(i1B))/Mod(i1A)),2)), "\\%"),
+                                paste(abs(round(100*((Mod(v1lA)-Mod(v1lB))/Mod(v1lA)),2)), "\\%"),
+                                paste(abs(round(100*((Mod(i2A)-Mod(i2B))/Mod(i2A)),2)), "\\%"),
+                                "0 \\%",
+                                paste(abs(round(100*((sA-sB)/sA),2)), "\\%")))
+colnames(resultados) <- c("Variável", "Modelo T", "Modelo Impedância Série", "Variação (\\%)")
+k <- knitr::kable(resultados, booktabs = T, escape = FALSE, caption = "Comparação entre os modelos")
+kableExtra::kable_styling(k, latex_options = "hold_position")
+```
+
+
