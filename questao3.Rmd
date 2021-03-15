@@ -2,134 +2,75 @@
 
 # Questão 3 {-}
 
-## Enunciado {-}
-
-Resolver individualmente, passo a passo e explicando com detalhes cada passo, conforme a sua versão definida pelo professor.
-
-a. Calcular a tensão e o fator de potência na fonte e a potência aparente fornecida pela fonte, referidas ao primário (lado 1), se o transformador estiver alimentando carga nominal (potência e tensão nominais), fator de potência 0,6 capacitivo, usando o circuito equivalente impedância série;
-b. Nas condições do item a, calcular o rendimento e a regulação do transformador;
-c. Comparar e comentar os resultados obtidos, tomando como referências os resultados obtidos no item b do
-Exemplo 1.4!
-
-```{r, echo=FALSE}
-
-# Variáveis   
-
-r1 = 1.85188
-x1 = 3.17947
-gm = 1/(0.0211806/1000)
-bm = 1/(0.037708706771/1000)
-r2 = 0.01852
-x2 = 0.03179
-v1 = 2400
-v2 = 240
-a = v1/v2
-S = 20000
-f = 60
-fp = 0.6
-indutivo = FALSE
-theta = 0
-if(indutivo){
-  theta = -abs(acos(fp))
-} else {
-  theta = abs(acos(fp))
-}
-
-theta2 = 0
-if(!indutivo){
-  theta2 = -abs(acos(fp))
-} else {
-  theta2 = abs(acos(fp))
-}
-
-# Cálculo para Impedância Série
-
-ilC = S/v2
-i2C = complex(modulus = ilC/a, argument = theta)
-v2l = a*v2
-i1C = i2C 
-v1lC = complex(real = r1 + (a^2)*r2, imaginary = x1 + (a^2)*x2)*i1C + v2l
-sC = Mod(v1lC)*Mod(i1C)
-
-# Rendimento Impedância em série
-thetaVCAP = Arg(v1lC)
-thetaICAP = Arg(i1C)
-etaCAP = 100*(S*fp)/(sC*cos(thetaVCAP - thetaICAP))
-
-# Regulação Impedância em Série
-rCAP = 100*(Mod(v1lC)-Mod(v2l))/Mod(v2l)
-
-# Cálculo para Impedância Série - INDUTIVO
-
-ilI = S/v2
-i2I = complex(modulus = ilI/a, argument = theta2)
-v2l = a*v2
-i1I = i2I 
-v1lI = complex(real = r1 + (a^2)*r2, imaginary = x1 + (a^2)*x2)*i1I + v2l
-sI = Mod(v1lI)*Mod(i1I)
-
-# Rendimento Impedância em série indutivo
-thetaVIND = Arg(v1lI)
-thetaIIND = Arg(i1I)
-etaIND = 100*(S*fp)/(sI*cos(thetaVIND - thetaIIND))
+Escolher duas questões do GRUPO I e duas questões do GRUPO II, de temas diferentes. Justificar todas as respostas. O professor não “lerá” o subentendido. Expliquem como se estivessem explanando para um colega que não foi às aulas e não está sabendo o assunto. 
 
 
-# Regulação Impedância em Série indutivo
-rIND = 100*(Mod(v1lI)-Mod(v2l))/Mod(v2l)
-```
+## Questões Grupo 1 {-}
+
+(4) Em relação aos ensaios de curto-circuito (CC) e de circuito aberto (CA) em transformadores é correto afirmar (Falso ou
+Verdadeiro):
+
+a. ( ) O ensaio de curto-circuito é necessário para se obter o rendimento do transformador no caso de se trabalhar com o modelo impedância série do transformador de potência, pois, fornece o valor das perdas no núcleo, necessário para o cálculo do rendimento do dispositivo.
+b. ( ) Vários ensaios são necessários para se obter as características de funcionamento e os parâmetros de um transformador de potência, como os ensaios de curto-circuito e de circuito aberto. Se o transformador for usado em corrente contínua como, por exemplo, promovendo o isolamento para corrente contínua entre circuitos, mas, se mantendo a continuidade para corrente alternada, o ensaio de polaridade também passa a ser importante. 
+c. ( ) O que se espera no ensaio de circuito aberto é uma alta impedância do transformador. Ao contrário, no ensaio de curtocircuito, uma baixa impedância é procurada, sendo que “alta” e “baixa” são consideradas em relação ao valor da impedância da carga. 
+d. ( ) As normas recomendam que o ensaio de CC seja realizado pelo lado de alta tensão e o de CA pelo lado de baixa tensão.
+e. ( ) Se os dois ensaios forem feitos, respectivamente, com corrente nominal e com tensão nominal, as perdas serão obtidas estarão com valores muito próximos aos seus valores reais em operação normal do equipamento, de forma que, no cálculo do rendimento, podem ser utilizadas diretamente, dispensando a obtenção individual de cada perda.
+
+(5) Em relação a transformador, de um modo geral, verificar se são verdadeiras (V) ou falsas (F) as seguintes afirmações:
+a. ( ) As harmônicas de corrente surgem da deformação de sua corrente de excitação, devido ao laço de histerese e à saturação do núcleo, possuindo frequências múltiplas da fundamental, com destaque para a terceira harmônica.
+b. ( ) A corrente de excitação produz, além do fluxo magnético no núcleo, perdas Joule nesse mesmo núcleo, provocando seu aquecimento.
+c. ( ) A corrente de excitação, ou de magnetização, é a responsável pela magnetização do núcleo do transformador e pelas perdas histeréticas e por correntes de Foucault.
+d. ( ) Os valores de base de linha e de fase em um sistema trifásico devem manter entre si a mesma relação que as grandezas respectivas em seus valores reais. Após se transformar o sistema trifásico equilibrado em por unidade, obtém-se um sistema monofásico em por unidade, que pode ser resolvido pelas técnicas usuais de circuitos elétricos.
+e. ( ) O sistema por unidade (pu) apresenta uma série de vantagens como, por exemplo, deixar os valores da corrente de excitação e da resistência e da reatância de excitação, respectivamente, dentro de faixas relativamente estreitas de valores, independentemente dos valores tomados como base. Outra vantagem é que, apesar de mudar os módulos ou valores eficazes das grandezas, inclusive potências, não altera os ângulos envolvidos entre as grandezas, o que permite a aplicação direta das técnicas de circuitos elétricos para a resolução dos problemas. 
 
 
-## Resolução {-}
+## Respostas - Questões Grupo 1 {-}
 
-Considerando um $fp = `r fp`$ capacitivo, temos
+(4) Em relação aos ensaios de curto-circuito (CC) e de circuito aberto (CA) em transformadores é correto afirmar (Falso ou
+Verdadeiro):
 
-$$
-\theta = \arccos{`r fp`} \implies \boxed{\theta = `r round(theta*180/pi,2)`}.
-$$
+a. (\textcolor{red}{F}) Como as resistências características de $g_m$ e $b_m$ são baixos para o ensiao de curto-circuito, a tensão sobre essas resistências também será muito baixa, tornando o valor de perdas no núcleo (para o ensaio de curto-circuito) praticamente desprezível.
+b. (\textcolor{red}{F} ) Não é possível realizar os testes aplicando uma corrente contínua. Um indutor (componente chave para um transformador) se comporta como um circuito aberto diante de uma corrente contínua. Dessa forma, se for aplicada uma cc, os ensaios não irão retornar valores úteis.
+c. (\textcolor{green}{V}) de fato, o que se espera no ensaio de circuito aberto é uma alta impedância do transformador, ao contrário do ensaio de curto-circuito. 
+d. (\textcolor{green}{V}) De fato, para que haja maior segurança nas medições, as normas recomendam que o ensaio de CC seja realizado pelo lado de alta tensão e o de CA pelo lado de baixa tensão.
+e. (\textcolor{red}{F}) As perdas encontradas são as perdas no ferro. Entretanto, não é dispensável a obtenção individual de cada perda.
 
-De acordo com o apresentado nos problemas 1.3 e 1.4 tem-se que
+(5) Em relação a transformador, de um modo geral, verificar se são verdadeiras (V) ou falsas (F) as seguintes afirmações:
+a. (\textcolor{green}{V}) De fato, as harmônicas de corrente surgem da deformação de sua corrente de excitação, em deccorência do laço de histerese e à saturação do núcleo. Também é notório que a terceira harmônica aparece com destaque neste cenário.
+b. (\textcolor{red}{F}) A corrente de excitação, além do fluxo magnético no núcleo, gera perdas Ôhmicas.
+c. (\textcolor{red}{F}) A corrente de excitação não é responsável pelas perdas por histerese e corrente de Foucault. Essas perdas são referentes ao núcleo que possui baixa resistividade elétrica.
+d. (\textcolor{green}{V}) De fato, os valores de base de linha e de fase em um sistema trifásico devem manter entre si a mesma relação que as grandezas respectivas em seus valores reais. Dessa forma, é possível se obter um sistema monofásico em por pu após se transformar o sistema trifásico equilibrado em pu.
+e. (\textcolor{red}{F}) A representação de um sistema trifásico em p.u. altera sim os ângulos, poir sé feito para uma única fase do sistema em $Y$ ou $Y_{equivalente}$ 
 
-$$
-\boxed{I_1 = I_2 = `r round(i2C,2)`A}, \quad \boxed{V'_2 = `r v2l`V}.
-$$
+## Questões Grupo 2 {-}
 
-Assim, aplicando uma análise de malhas, tem-se que
+(11) Em relação a um transformador de potência é correto afirmar (Falso ou Verdadeiro):
+a. ( ) Para melhorar o seu rendimento, deve ser projetado para que haja uma compatibilidade entre densidade de corrente e a indução no ferro e o custo do equipamento. No caso do ferro, usar ligas ferromagnéticas de alta resistividade e com laço de histerese bastante estreito.
+b. ( ) A frase “Para cada 1 MVA de potência gerada por uma usina, são necessários de 6 a 10 MVA de potência em transformadores para que esta energia chegue ao consumidor final” mostra uma interessante constatação prática.
+c. ( ) Deseja-se que possuam custo aceitável, com boa regulação de tensão, alto rendimento, baixa corrente de excitação e baixas perdas quando operando em vazio. Baixas correntes em vazio são obtidas com altas indutâncias (reatâncias) de magnetização, característica de núcleos altamente permeáveis. Menores perdas em vazio significam, principalmente, menores perdas no ferro.
+d. ( ) Para que se obtenha uma regulação de tensão adequada, deve-se reduzir a queda de tensão no equipamento. Assim, no projeto do transformador, deve-se intensificar o acoplamento magnético entre os enrolamentos, visando-se a redução dos fluxos dispersos, com aproximação entre as bobinas e uso de núcleos ferromagnéticos altamente permeáveis.
+e. ( ) O transformador pode ser considerado um grande impulsionador da transmissão econômica de energia elétrica a grandes distâncias, já que propiciou a transmissão em altas tensões, com menores correntes (menores perdas e economia nos condutores).
 
-$$
-V_1 = (`r complex(real = r1 + (a^2)*r2, imaginary = x1 + (a^2)*x2)`)I_1 + V_2 \implies \boxed{V_1 = `r round(v1lC,2)`}
-$$
+(19) São falsas ou verdadeiras as proposições a seguir, a respeito da técnica por unidade (pu)?
+a. ( ) Se, por exemplo, a queda de tensão na resistência no enrolamento de baixa tensão de um transformador for 0,01pu (por unidade), isso significa que essa queda é 1% da tensão tomada como base para esse circuito. Se essa resistência for transferida para o enrolamento de alta, o valor da queda de tensão continuará sendo 0,01pu, mas, agora, em relação à tensão tomada como base para o enrolamento de alta.
+b. ( ) Uma das vantagens do sistema pu (por unidade) é que os parâmetros elétricos de um dado transformador têm valores típicos, não apresentando, portanto, variações significativas em relação a outros transformadores, ainda que as potências nominais dos transformadores comparados variem, desde que os valores de base de cada equipamento sejam os seus valores nominais.
+c. ( ) Para o cálculo do rendimento sempre podem ser utilizadas diretamente as grandezas em pu. Embora os valores das potências em pu não sejam os verdadeiros (aqueles em W), os valores do numerador e do denominador da expressão usada para o cálculo do rendimento são proporcionais entre si, de modo que o valor do quociente não se altera.
+d. ( ) Dependendo da base escolhida, os valores (numéricos) em pu para o mesmo circuito elétrico serão diferentes entre si, podendo ser maiores ou menores que os valores reais das grandezas envolvidas.
+e. ( ) Os valores em pu (por unidade) em um ponto do circuito (lado do transformador) têm os mesmos valores quando transferidos para o outro lado. Isso ocorre porque tanto os valores reais das grandezas, bem como, os valores de base estão relacionados pela mesma relação de transformação.
 
-A potência aparente fornecida pela fonte é
 
-$$
-\boxed{S = |V_1||I_1| \implies S = `r round(sC,2)`VA}.
-$$
+## Respostas - Questões Grupo 2 {-}
 
-E, finalmente, o fator de potência aparente fornecido pela fonte é
+(11) Em relação a um transformador de potência é correto afirmar (Falso ou Verdadeiro):
+a. (\textcolor{green}{V}) De fato, para melhorar o seu rendimento, deve ser projetado para que haja uma compatibilidade entre densidade de corrente e a indução no ferro e o custo do equipamento. Usar ligas ferromagnéticas de alta resistividade e com laço de histerese bastante estreito reduz as perdas por histerese e correntes de faucault referentes ao núcleo.
+b. (\textcolor{green}{V}) De fato é uma interessante constatação prática, uma vez que apresenta uma margem de 4MVA de potência para atingir o objetivo.
+c. (\textcolor{green}{V}) De fato, todas as características apresentadas são relacionadas a um bom transformador. Também é fato que menores perdas em vazio são características de um núcleo de ferro com alta indutância, o que minimiza as perdas por histerese.
+d. (\textcolor{green}{V}) De fato, para que haja uma boa regulação é necessário minimizar as perdas magnéticas. Isso é possível aproximando as bobinas e aplicando-as em um núcleo permeável (como citado, um núcleo ferromagnético).
+e. (\textcolor{green}{V}) As transmissões de energia elétrica apresentaram um ganho considerável com a aplicação de transformadores, uma vez que se bem dimencionados e utilizando bons componentes, eles minizam as perdas de distribuição.
 
-$$
-fp = \cos{(\theta_V - \theta_i) = \cos(`r thetaVCAP` - `r thetaICAP`)} \implies \boxed{fp = `r round(cos(thetaVCAP - thetaICAP),2)`}
-$$
-
-Dessa forma, para o modelo proposto tem-se o rendimento
-
-$$
-\eta = \frac{(`r S`)(`r fp`)}{(`r round(sC,2)`)(\cos{(`r round(thetaVCAP*180/pi,2)` - `r round(thetaICAP*180/pi,2)`)})} \implies \boxed{\eta_T = `r paste(round(etaCAP,2), "\\%")`}
-$$
-
-e a regulação
-
-$$
-\Re = \frac{`r round(Mod(v1lC),2)` - `r Mod(v2l)`}{`r Mod(v2l)`} \implies \boxed{\Re_T = `r paste(round(rCAP,2), "\\%")`}
-$$
-
-A Tabela \@ref(tab:tab3) mostra a comparação entre os resultados dos modelos tendo fatores de potência distintos (capacitivo e indutivo). Pode-se perceber que para fatores de potência com o mesmo valor (`r fp`) mas com propriedades diferentes (um capacitivo e outro indutivo), o modelo apresenta o mesmo rendimento (`r etaIND`), havendo variação apenas na regução. Para ambos os casos a regulação apresenta um valor bem próximo de zero, tendo valor maior que zero para propriedades indutivas e menor que zero para propriedades capacitivas.
-
-```{r tab3, echo=FALSE}
-resultados <- data.frame(T1 = c("Rendimento", "Regulação"),
-                         T2 = c(paste(round(etaIND,2), "\\%"),paste(round(rIND,2), "\\%")),
-                         T3 = c(paste(round(etaCAP,2), "\\%"),paste(round(rCAP,2), "\\%")))
-colnames(resultados) <- c("Variável", "Indutivo", "Capacitivo")
-k <- knitr::kable(resultados, booktabs = T, escape = FALSE, caption = "Comparação entre os modelos")
-kableExtra::kable_styling(k, latex_options = "hold_position")
-```
+(19) São falsas ou verdadeiras as proposições a seguir, a respeito da técnica por unidade (pu)?
+a. (\textcolor{green}{V}) De fato, considerando a tensão tomada como base igual a 1, uma queda de 0.01pu apresenta uma queda de 1%. E também é fato que as proporções são as mesmas para ambos os lados do circuito.
+b. (\textcolor{green}{V}) De fato, a principal vantagem da utilização da técnica pu é a sua proporcionalidade. Dessa forma, contanto que as proporcionalidades se mantenham as mesmas, as potências nominais dos transformadores podem variar.
+c. (\textcolor{green}{V}) Novamente, a principal vantagem da técnica pu é a proporcionalidade. Dessa forma, mesmo que os valores aplicados não sejam "reais", a proporcionalidade garante que o rendimento gerará o mesmo valor para ambas as situações.
+d. (\textcolor{green}{V}) De fato, os valores numéricos serão alterados de acordo com a base escolhida. Entretanto, não será alterada a proporcionalidade entre eles.
+e. (\textcolor{green}{V}) De fato, a proporcionalidade gerada pela técnica pu garante que de ambos os lados do transformador os valores serão iguais.
